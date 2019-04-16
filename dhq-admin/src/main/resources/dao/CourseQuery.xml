@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xnt.dhq.dao.CourseDao">
+    <resultMap id="CourseQueryResultMap" type="com.xnt.dhq.model.CourseQueryParam">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="name" jdbcType="VARCHAR" property="name" />
+        <result column="description" jdbcType="VARCHAR" property="description" />
+        <result column="picture" jdbcType="VARCHAR" property="picture" />
+        <result column="times_of_class" jdbcType="INTEGER" property="timesOfClass" />
+        <result column="price" jdbcType="INTEGER" property="price" />
+        <result column="course_content" jdbcType="VARCHAR" property="courseContent" />
+        <result column="online" jdbcType="TINYINT" property="online" />
+        <result column="status" jdbcType="TINYINT" property="status" />
+        <association column="type_id" property="courseType" select="com.xnt.dhq.mapper.CourseTypeMapper.selectByPrimaryKey"/>
+    </resultMap>
+
+    <select id="selectCourse" resultMap="CourseQueryResultMap">
+        SELECT
+        id,name,type_id,picture,times_of_class,price,description,course_content,online,status
+        FROM
+        course
+    </select>
+
+    <select id="selectCourseById" resultMap="CourseQueryResultMap">
+        SELECT
+        id,name,type_id,picture,times_of_class,price,description,course_content,online,status
+        FROM
+        course
+        WHERE id=#{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="selectCourseByType" resultMap="CourseQueryResultMap">
+        SELECT
+        c.id,c.name,c.type_id,c.picture,c.times_of_class,c.price,c.description,c.course_content,c.online,c.status,t.first_type,t.second_type,t.third_type
+        FROM
+        course c,course_type t
+        WHERE c.type_id=t.id
+        <if test="firstType!=null">
+            and t.first_type=#{firstType}
+        </if>
+
+        <if test="secondType!=null">
+            and t.second_type=#{secondType}
+        </if>
+
+        <if test="thirdType!=null">
+            and t.third_type=#{thirdType}
+        </if>
+    </select>
+
+    <select id="selectFirstCourseType" resultType="com.xnt.dhq.model.FirstCourseType">
+        select DISTINCT first_type from course_type
+    </select>
+
+    <select id="selectSecondCourseType" resultType="com.xnt.dhq.model.SecondCourseType">
+        select DISTINCT second_type from course_type
+    </select>
+
+    <select id="selectThirdCourseType" resultType="com.xnt.dhq.model.ThirdCourseType">
+        select DISTINCT third_type from course_type
+    </select>
+
+    <select id="countByCourseTypeId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select count(*) from course
+        WHERE type_id=#{typeId}
+    </select>
+
+    <select id="countByCourseTypeIds" resultType="java.lang.Integer">
+        select count(*) from course
+        WHERE type_id in
+        <foreach collection="ids" item="type_id" index="index" open="(" close=")" separator=",">
+            #{type_id}
+        </foreach>
+
+    </select>
+
+
+</mapper>

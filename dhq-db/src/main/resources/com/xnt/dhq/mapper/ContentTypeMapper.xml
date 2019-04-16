@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xnt.dhq.mapper.ContentTypeMapper" >
+  <resultMap id="BaseResultMap" type="com.xnt.dhq.model.ContentType" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="first_category" property="firstCategory" jdbcType="VARCHAR" />
+    <result column="second_category" property="secondCategory" jdbcType="VARCHAR" />
+    <result column="third_category" property="thirdCategory" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, first_category, second_category, third_category
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.xnt.dhq.model.ContentTypeExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from content_type
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from content_type
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from content_type
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.xnt.dhq.model.ContentTypeExample" >
+    delete from content_type
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.xnt.dhq.model.ContentType" >
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into content_type (first_category, second_category, third_category
+      )
+    values (#{firstCategory,jdbcType=VARCHAR}, #{secondCategory,jdbcType=VARCHAR}, #{thirdCategory,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.xnt.dhq.model.ContentType" >
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into content_type
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="firstCategory != null" >
+        first_category,
+      </if>
+      <if test="secondCategory != null" >
+        second_category,
+      </if>
+      <if test="thirdCategory != null" >
+        third_category,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="firstCategory != null" >
+        #{firstCategory,jdbcType=VARCHAR},
+      </if>
+      <if test="secondCategory != null" >
+        #{secondCategory,jdbcType=VARCHAR},
+      </if>
+      <if test="thirdCategory != null" >
+        #{thirdCategory,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.xnt.dhq.model.ContentTypeExample" resultType="java.lang.Integer" >
+    select count(*) from content_type
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update content_type
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.firstCategory != null" >
+        first_category = #{record.firstCategory,jdbcType=VARCHAR},
+      </if>
+      <if test="record.secondCategory != null" >
+        second_category = #{record.secondCategory,jdbcType=VARCHAR},
+      </if>
+      <if test="record.thirdCategory != null" >
+        third_category = #{record.thirdCategory,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update content_type
+    set id = #{record.id,jdbcType=BIGINT},
+      first_category = #{record.firstCategory,jdbcType=VARCHAR},
+      second_category = #{record.secondCategory,jdbcType=VARCHAR},
+      third_category = #{record.thirdCategory,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xnt.dhq.model.ContentType" >
+    update content_type
+    <set >
+      <if test="firstCategory != null" >
+        first_category = #{firstCategory,jdbcType=VARCHAR},
+      </if>
+      <if test="secondCategory != null" >
+        second_category = #{secondCategory,jdbcType=VARCHAR},
+      </if>
+      <if test="thirdCategory != null" >
+        third_category = #{thirdCategory,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xnt.dhq.model.ContentType" >
+    update content_type
+    set first_category = #{firstCategory,jdbcType=VARCHAR},
+      second_category = #{secondCategory,jdbcType=VARCHAR},
+      third_category = #{thirdCategory,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

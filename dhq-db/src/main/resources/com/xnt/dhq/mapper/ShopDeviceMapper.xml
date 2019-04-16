@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xnt.dhq.mapper.ShopDeviceMapper">
+  <resultMap id="BaseResultMap" type="com.xnt.dhq.model.ShopDevice">
+    <id column="shop_device_id" jdbcType="INTEGER" property="shopDeviceId" />
+    <result column="shop_id" jdbcType="INTEGER" property="shopId" />
+    <result column="device_id" jdbcType="INTEGER" property="deviceId" />
+    <result column="shop_device_status" jdbcType="VARCHAR" property="shopDeviceStatus" />
+    <result column="chargeid_of_shop_device" jdbcType="INTEGER" property="chargeidOfShopDevice" />
+    <result column="shop_device_remark" jdbcType="VARCHAR" property="shopDeviceRemark" />
+    <result column="serial_number" jdbcType="INTEGER" property="serialNumber" />
+  </resultMap>
+<!--<resultMap id="ShopAndTypeID" type="java.util.List">-->
+<!--  <result column="shop_id" jdbcType="INTEGER" property="shop_id" />-->
+<!--  <result column="type_id" jdbcType="INTEGER" property="managerId" />-->
+<!--</resultMap>-->
+  <select id="SearchByShopID" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select *
+    from shop_device
+    where shop_id = '${shopDevice_shopID}'
+  </select>
+  <select id="selectAllShopDevice" resultMap="BaseResultMap">
+    select * from shop_device
+  </select>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    shop_device_id, shop_id, device_id, shop_device_status, chargeid_of_shop_device, 
+    shop_device_remark, serial_number
+  </sql>
+  <select id="selectByExample" parameterType="com.xnt.dhq.model.ShopDeviceExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from shop_device
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from shop_device
+    where shop_device_id = #{shopDeviceId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from shop_device
+    where shop_device_id = #{shopDeviceId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.xnt.dhq.model.ShopDeviceExample">
+    delete from shop_device
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.xnt.dhq.model.ShopDevice">
+    insert into shop_device (shop_device_id, shop_id, device_id, 
+      shop_device_status, chargeid_of_shop_device, 
+      shop_device_remark, serial_number)
+    values (#{shopDeviceId,jdbcType=INTEGER}, #{shopId,jdbcType=INTEGER}, #{deviceId,jdbcType=INTEGER}, 
+      #{shopDeviceStatus,jdbcType=VARCHAR}, #{chargeidOfShopDevice,jdbcType=INTEGER}, 
+      #{shopDeviceRemark,jdbcType=VARCHAR}, #{serialNumber,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.xnt.dhq.model.ShopDevice">
+    insert into shop_device
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="shopDeviceId != null">
+        shop_device_id,
+      </if>
+      <if test="shopId != null">
+        shop_id,
+      </if>
+      <if test="deviceId != null">
+        device_id,
+      </if>
+      <if test="shopDeviceStatus != null">
+        shop_device_status,
+      </if>
+      <if test="chargeidOfShopDevice != null">
+        chargeid_of_shop_device,
+      </if>
+      <if test="shopDeviceRemark != null">
+        shop_device_remark,
+      </if>
+      <if test="serialNumber != null">
+        serial_number,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="shopDeviceId != null">
+        #{shopDeviceId,jdbcType=INTEGER},
+      </if>
+      <if test="shopId != null">
+        #{shopId,jdbcType=INTEGER},
+      </if>
+      <if test="deviceId != null">
+        #{deviceId,jdbcType=INTEGER},
+      </if>
+      <if test="shopDeviceStatus != null">
+        #{shopDeviceStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="chargeidOfShopDevice != null">
+        #{chargeidOfShopDevice,jdbcType=INTEGER},
+      </if>
+      <if test="shopDeviceRemark != null">
+        #{shopDeviceRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="serialNumber != null">
+        #{serialNumber,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.xnt.dhq.model.ShopDeviceExample" resultType="java.lang.Integer">
+    select count(*) from shop_device
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+
+  <update id="updateByExampleSelective" parameterType="map">
+    update shop_device
+    <set>
+      <if test="record.shopDeviceId != null">
+        shop_device_id = #{record.shopDeviceId,jdbcType=INTEGER},
+      </if>
+      <if test="record.shopId != null">
+        shop_id = #{record.shopId,jdbcType=INTEGER},
+      </if>
+      <if test="record.deviceId != null">
+        device_id = #{record.deviceId,jdbcType=INTEGER},
+      </if>
+      <if test="record.shopDeviceStatus != null">
+        shop_device_status = #{record.shopDeviceStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="record.chargeidOfShopDevice != null">
+        chargeid_of_shop_device = #{record.chargeidOfShopDevice,jdbcType=INTEGER},
+      </if>
+      <if test="record.shopDeviceRemark != null">
+        shop_device_remark = #{record.shopDeviceRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.serialNumber != null">
+        serial_number = #{record.serialNumber,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update shop_device
+    set shop_device_id = #{record.shopDeviceId,jdbcType=INTEGER},
+      shop_id = #{record.shopId,jdbcType=INTEGER},
+      device_id = #{record.deviceId,jdbcType=INTEGER},
+      shop_device_status = #{record.shopDeviceStatus,jdbcType=VARCHAR},
+      chargeid_of_shop_device = #{record.chargeidOfShopDevice,jdbcType=INTEGER},
+      shop_device_remark = #{record.shopDeviceRemark,jdbcType=VARCHAR},
+      serial_number = #{record.serialNumber,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xnt.dhq.model.ShopDevice">
+    update shop_device
+    <set>
+      <if test="shopId != null">
+        shop_id = #{shopId,jdbcType=INTEGER},
+      </if>
+      <if test="deviceId != null">
+        device_id = #{deviceId,jdbcType=INTEGER},
+      </if>
+      <if test="shopDeviceStatus != null">
+        shop_device_status = #{shopDeviceStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="chargeidOfShopDevice != null">
+        chargeid_of_shop_device = #{chargeidOfShopDevice,jdbcType=INTEGER},
+      </if>
+      <if test="shopDeviceRemark != null">
+        shop_device_remark = #{shopDeviceRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="serialNumber != null">
+        serial_number = #{serialNumber,jdbcType=INTEGER},
+      </if>
+    </set>
+    where shop_device_id = #{shopDeviceId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xnt.dhq.model.ShopDevice">
+    update shop_device
+    set shop_id = #{shopId,jdbcType=INTEGER},
+      device_id = #{deviceId,jdbcType=INTEGER},
+      shop_device_status = #{shopDeviceStatus,jdbcType=VARCHAR},
+      chargeid_of_shop_device = #{chargeidOfShopDevice,jdbcType=INTEGER},
+      shop_device_remark = #{shopDeviceRemark,jdbcType=VARCHAR},
+      serial_number = #{serialNumber,jdbcType=INTEGER}
+    where shop_device_id = #{shopDeviceId,jdbcType=INTEGER}
+  </update>
+</mapper>

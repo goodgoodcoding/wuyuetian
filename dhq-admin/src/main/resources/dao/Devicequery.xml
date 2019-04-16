@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xnt.dhq.dao.DeviceDao">
+    <resultMap id="DeviceQueryResultMap" type="com.xnt.dhq.model.DeviceQueryParam">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="name" jdbcType="VARCHAR" property="name" />
+        <!--<result column="type_id" jdbcType="INTEGER" property="typeId" />-->
+        <result column="price" jdbcType="INTEGER" property="price" />
+        <result column="produce_date" jdbcType="DATE" property="produceDate" />
+        <result column="use_year" jdbcType="INTEGER" property="useYear" />
+        <result column="describtion" jdbcType="VARCHAR" property="describtion" />
+        <!--<result column="first_category" jdbcType="VARCHAR" property="first_category" />-->
+        <!--<result column="second_category" jdbcType="VARCHAR" property="second_category" />-->
+        <!--<result column="third_category" jdbcType="VARCHAR" property="third_category" />-->
+        <association column="type_id" property="dhqDeviceType" select="com.xnt.dhq.mapper.DhqDeviceTypeMapper.selectByPrimaryKey"/>
+    </resultMap>
+    <!--<select id="selectDevice" resultType="com.xnt.dhq.model.DeviceQueryParam">-->
+    <!--SELECT-->
+    <!--d.id,d.name,d.type_id,d.price,d.produce_date,d.use_year,d.describtion,-->
+    <!--t.first_category,t.second_category,t.third_category-->
+    <!--FROM-->
+    <!--dhq_device d,dhq_device_type t WHERE d.type_id = t.id-->
+
+    <!--</select>-->
+    <resultMap id="DeviceQueryResultMap2" type="com.xnt.dhq.model.DeviceQueryParam2">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="name" jdbcType="VARCHAR" property="name" />
+        <result column="type_id" jdbcType="INTEGER" property="typeId" />
+        <result column="price" jdbcType="INTEGER" property="price" />
+        <result column="produce_date" jdbcType="DATE" property="produceDate" />
+        <result column="use_year" jdbcType="INTEGER" property="useYear" />
+        <result column="describtion" jdbcType="VARCHAR" property="describtion" />
+        <result column="first_category" jdbcType="VARCHAR" property="firstCategory" />
+        <result column="second_category" jdbcType="VARCHAR" property="secondCategory" />
+        <result column="third_category" jdbcType="VARCHAR" property="thirdCategory" />
+        <!--<association column="type_id" property="dhqDeviceType" select="com.xnt.dhq.mapper.DhqDeviceTypeMapper.selectByPrimaryKey"/>-->
+    </resultMap>
+
+    <select id="selectDevice" resultMap="DeviceQueryResultMap">
+        SELECT
+        id,name,type_id,price,produce_date,use_year,describtion
+        FROM
+        dhq_device
+    </select>
+
+    <select id="selectDeviceById" resultMap="DeviceQueryResultMap">
+        SELECT
+        id,name,type_id,price,produce_date,use_year,describtion
+        FROM
+        dhq_device
+        WHERE id=#{id,jdbcType=INTEGER}
+
+    </select>
+
+    <select id="selectDeviceByType" resultMap="DeviceQueryResultMap">
+    SELECT
+    d.id,d.name,d.type_id,d.price,d.produce_date,d.use_year,d.describtion,
+    t.first_category,t.second_category,t.third_category
+    FROM
+    dhq_device d,dhq_device_type t WHERE d.type_id = t.id
+        <if test="first_category!=null">
+            and t.first_category=#{keyword1}
+        </if>
+
+        <if test="second_category!=null">
+            and t.second_category=#{keyword2}
+        </if>
+
+        <if test="third_category!=null">
+            and t.third_category=#{keyword3}
+        </if>
+
+    </select>
+
+    <select id="countByDeviceTypeId" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select count(*) from dhq_device
+        <!--<if test="_parameter != null">-->
+        <!--<include refid="Example_Where_Clause" />-->
+        <!--</if>-->
+        WHERE type_id=#{typeId}
+    </select>
+
+    <select id="selectFisrtCategory" resultType="com.xnt.dhq.model.FirstCategoryParam">
+        select DISTINCT first_category from dhq_device_type
+    </select>
+
+    <select id="selectSecondCategory" resultType="com.xnt.dhq.model.SecondCategoryParam">
+        select DISTINCT second_category from dhq_device_type
+    </select>
+
+    <select id="selectThirdCategory" resultType="com.xnt.dhq.model.ThirdCategoryParam">
+        select DISTINCT third_category from dhq_device_type
+    </select>
+
+    <select id="selectDeviceByType2" resultMap="DeviceQueryResultMap2">
+        SELECT
+        d.id,d.name,d.price,d.produce_date,d.use_year,d.describtion,d.type_id,t.id,
+        t.first_category,t.second_category,t.third_category
+        FROM
+        dhq_device d,dhq_device_type t WHERE d.type_id = t.id
+        <if test="keyword1!=null">
+            and first_category=#{keyword1}
+        </if>
+
+        <if test="keyword2!=null">
+            and second_category=#{keyword2}
+        </if>
+
+        <if test="keyword3!=null">
+            and third_category=#{keyword3}
+        </if>
+
+    </select>
+</mapper>

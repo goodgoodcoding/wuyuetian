@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xnt.dhq.mapper.FillQuestionMapper">
+  <resultMap id="BaseResultMap" type="com.xnt.dhq.model.FillQuestion">
+    <id column="fill_id" jdbcType="INTEGER" property="fillId" />
+    <result column="fill_answer" jdbcType="VARCHAR" property="fillAnswer" />
+    <result column="grade" jdbcType="INTEGER" property="grade" />
+    <result column="difficulty_level" jdbcType="VARCHAR" property="difficultyLevel" />
+    <result column="subject" jdbcType="VARCHAR" property="subject" />
+    <result column="knowledge_point" jdbcType="VARCHAR" property="knowledgePoint" />
+    <result column="score" jdbcType="VARCHAR" property="score" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.xnt.dhq.model.FillQuestion">
+    <result column="fill_content" jdbcType="LONGVARCHAR" property="fillContent" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    fill_id, fill_answer, grade, difficulty_level, subject, knowledge_point, score
+  </sql>
+  <sql id="Blob_Column_List">
+    fill_content
+  </sql>
+  <select id="selectByExampleWithBLOBs" parameterType="com.xnt.dhq.model.FillQuestionExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from fill_question
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="com.xnt.dhq.model.FillQuestionExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from fill_question
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from fill_question
+    where fill_id = #{fillId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from fill_question
+    where fill_id = #{fillId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.xnt.dhq.model.FillQuestionExample">
+    delete from fill_question
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.xnt.dhq.model.FillQuestion">
+    <selectKey keyProperty="fillId" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into fill_question (fill_answer, grade, difficulty_level, 
+      subject, knowledge_point, score, 
+      fill_content)
+    values (#{fillAnswer,jdbcType=VARCHAR}, #{grade,jdbcType=INTEGER}, #{difficultyLevel,jdbcType=VARCHAR}, 
+      #{subject,jdbcType=VARCHAR}, #{knowledgePoint,jdbcType=VARCHAR}, #{score,jdbcType=VARCHAR}, 
+      #{fillContent,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.xnt.dhq.model.FillQuestion">
+    <selectKey keyProperty="fillId" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into fill_question
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="fillAnswer != null">
+        fill_answer,
+      </if>
+      <if test="grade != null">
+        grade,
+      </if>
+      <if test="difficultyLevel != null">
+        difficulty_level,
+      </if>
+      <if test="subject != null">
+        subject,
+      </if>
+      <if test="knowledgePoint != null">
+        knowledge_point,
+      </if>
+      <if test="score != null">
+        score,
+      </if>
+      <if test="fillContent != null">
+        fill_content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="fillAnswer != null">
+        #{fillAnswer,jdbcType=VARCHAR},
+      </if>
+      <if test="grade != null">
+        #{grade,jdbcType=INTEGER},
+      </if>
+      <if test="difficultyLevel != null">
+        #{difficultyLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="subject != null">
+        #{subject,jdbcType=VARCHAR},
+      </if>
+      <if test="knowledgePoint != null">
+        #{knowledgePoint,jdbcType=VARCHAR},
+      </if>
+      <if test="score != null">
+        #{score,jdbcType=VARCHAR},
+      </if>
+      <if test="fillContent != null">
+        #{fillContent,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.xnt.dhq.model.FillQuestionExample" resultType="java.lang.Integer">
+    select count(*) from fill_question
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update fill_question
+    <set>
+      <if test="record.fillId != null">
+        fill_id = #{record.fillId,jdbcType=INTEGER},
+      </if>
+      <if test="record.fillAnswer != null">
+        fill_answer = #{record.fillAnswer,jdbcType=VARCHAR},
+      </if>
+      <if test="record.grade != null">
+        grade = #{record.grade,jdbcType=INTEGER},
+      </if>
+      <if test="record.difficultyLevel != null">
+        difficulty_level = #{record.difficultyLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="record.subject != null">
+        subject = #{record.subject,jdbcType=VARCHAR},
+      </if>
+      <if test="record.knowledgePoint != null">
+        knowledge_point = #{record.knowledgePoint,jdbcType=VARCHAR},
+      </if>
+      <if test="record.score != null">
+        score = #{record.score,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fillContent != null">
+        fill_content = #{record.fillContent,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update fill_question
+    set fill_id = #{record.fillId,jdbcType=INTEGER},
+      fill_answer = #{record.fillAnswer,jdbcType=VARCHAR},
+      grade = #{record.grade,jdbcType=INTEGER},
+      difficulty_level = #{record.difficultyLevel,jdbcType=VARCHAR},
+      subject = #{record.subject,jdbcType=VARCHAR},
+      knowledge_point = #{record.knowledgePoint,jdbcType=VARCHAR},
+      score = #{record.score,jdbcType=VARCHAR},
+      fill_content = #{record.fillContent,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update fill_question
+    set fill_id = #{record.fillId,jdbcType=INTEGER},
+      fill_answer = #{record.fillAnswer,jdbcType=VARCHAR},
+      grade = #{record.grade,jdbcType=INTEGER},
+      difficulty_level = #{record.difficultyLevel,jdbcType=VARCHAR},
+      subject = #{record.subject,jdbcType=VARCHAR},
+      knowledge_point = #{record.knowledgePoint,jdbcType=VARCHAR},
+      score = #{record.score,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xnt.dhq.model.FillQuestion">
+    update fill_question
+    <set>
+      <if test="fillAnswer != null">
+        fill_answer = #{fillAnswer,jdbcType=VARCHAR},
+      </if>
+      <if test="grade != null">
+        grade = #{grade,jdbcType=INTEGER},
+      </if>
+      <if test="difficultyLevel != null">
+        difficulty_level = #{difficultyLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="subject != null">
+        subject = #{subject,jdbcType=VARCHAR},
+      </if>
+      <if test="knowledgePoint != null">
+        knowledge_point = #{knowledgePoint,jdbcType=VARCHAR},
+      </if>
+      <if test="score != null">
+        score = #{score,jdbcType=VARCHAR},
+      </if>
+      <if test="fillContent != null">
+        fill_content = #{fillContent,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where fill_id = #{fillId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.xnt.dhq.model.FillQuestion">
+    update fill_question
+    set fill_answer = #{fillAnswer,jdbcType=VARCHAR},
+      grade = #{grade,jdbcType=INTEGER},
+      difficulty_level = #{difficultyLevel,jdbcType=VARCHAR},
+      subject = #{subject,jdbcType=VARCHAR},
+      knowledge_point = #{knowledgePoint,jdbcType=VARCHAR},
+      score = #{score,jdbcType=VARCHAR},
+      fill_content = #{fillContent,jdbcType=LONGVARCHAR}
+    where fill_id = #{fillId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xnt.dhq.model.FillQuestion">
+    update fill_question
+    set fill_answer = #{fillAnswer,jdbcType=VARCHAR},
+      grade = #{grade,jdbcType=INTEGER},
+      difficulty_level = #{difficultyLevel,jdbcType=VARCHAR},
+      subject = #{subject,jdbcType=VARCHAR},
+      knowledge_point = #{knowledgePoint,jdbcType=VARCHAR},
+      score = #{score,jdbcType=VARCHAR}
+    where fill_id = #{fillId,jdbcType=INTEGER}
+  </update>
+</mapper>
